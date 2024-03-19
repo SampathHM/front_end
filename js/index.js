@@ -6,32 +6,17 @@ const todos = new Todos(BACKEND_ROOT_URL)
 const list = document.querySelector('ul')
 const input = document.querySelector('input')
 
-input.disabled = true
+input.disabled = false
 
 /*create separate function for rendering task*/
 const renderTask = (task) => {
   const li = document.createElement('li')
   li.setAttribute('class', 'list-group-item')
-  li.innerHTML = task.getTasks()
+  li.innerHTML = task.getText()
   list.append(li)
 }
 
-/*create separate function for getting tasks
-  try {
-    const response = await fetch(BACKEND_ROOT_URL)
-    const json = await response.json()
-    json.forEach(task => {
-      renderTask(task.description)
-    })
-    input.disabled = false
-  } catch (error) {
-    alert('Error retrieving tasks' + error.message)
-  }
-}
-*/
-
-
-/*create separate function for saving task*/
+/*create separate function for getting task*/
 
 const getTasks = () => {
   todos.getTasks().then((tasks) => {
@@ -67,12 +52,13 @@ input.addEventListener('keypress', (event) => {
       event.preventDefault()
       const task = input.value.trim()
       if (task!=='') {
-        saveTask(task).then((json) => {
+        todos.addTask(task).then((task) => {
           renderTask(task)
-          input.value = ''                        
+          input.value = ''
+          input.focus()                        
       })
     }    
-    }
-  });
+  }
+});
 
   getTasks()

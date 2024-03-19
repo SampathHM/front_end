@@ -7,11 +7,11 @@ class Task {
         this.#text = text
     }
 
-    getId = () => {
+    getId() {
         return this.#id
     }
 
-    getText = () => {
+    getText() {
         return this.#text
     }
 }
