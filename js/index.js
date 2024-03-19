@@ -1,4 +1,7 @@
 const BACKEND_ROOT_URL = 'http://localhost:3001'
+import { Todos } from "./class/Todos.js";
+
+const todos = new Todos(BACKEND_ROOT_URL)
 
 const list = document.querySelector('ul')
 const input = document.querySelector('input')
@@ -9,12 +12,11 @@ input.disabled = true
 const renderTask = (task) => {
   const li = document.createElement('li')
   li.setAttribute('class', 'list-group-item')
-  li.innerHTML = task
+  li.innerHTML = task.getTasks()
   list.append(li)
 }
 
-/*create separate function for getting tasks*/
-const getTasks = async () => {
+/*create separate function for getting tasks
   try {
     const response = await fetch(BACKEND_ROOT_URL)
     const json = await response.json()
@@ -26,8 +28,23 @@ const getTasks = async () => {
     alert('Error retrieving tasks' + error.message)
   }
 }
+*/
+
 
 /*create separate function for saving task*/
+
+const getTasks = () => {
+  todos.getTasks().then((tasks) => {
+      tasks.forEach(task => {
+          renderTask(task)
+      })
+      //input.disabled = false
+  }).catch((error) => {
+      alert(error)
+  })
+}
+/*create separate function for saving task */
+
 const saveTask = async (task) => {
   try {
     const json = JSON.stringify({ description: task })
@@ -42,7 +59,7 @@ const saveTask = async (task) => {
   } catch (error) {
     alert('Error saving task' + error.message)
   }
-}
+} 
 
 /*key press enter event*/
 input.addEventListener('keypress', (event) => {
